@@ -31,6 +31,8 @@ CHA ●○○○○○○○○○
 NOTE: while str and int are common abbreviations for the stats, remember that those are reserved keywords in Python and should not be used as variable names.
 
 """
+
+
 full_dot = '●'
 empty_dot = '○'
 
@@ -38,54 +40,64 @@ def create_character(name, fuerza, inteligencia, carisma):
 
     # Validamos el nombre
     if not isinstance(name, str):
-        return ("The character name should be a string")
+        return 'The character name should be a string'
+
+    if len(name) > 10:
+        return 'The character name is too long'
+
+    if ' ' in name:
+        return 'The character name should not contain spaces'
 
     elif name == "":
         return ("The character should have a name")
 
-    elif len(name) > 10:
-        return ( "The character name is too long")
+    # Validamos las estadisticas
+    estadisticas = {'STR':fuerza, 'INT':inteligencia, 'CHA': carisma}
 
-    elif " " in name:
-        return("The character name should not contain spaces")
+    for sta in estadisticas.values():
+        if type(sta)  != int:
+            return "All stats should be integers"
+    
+    for sta in estadisticas.values():
+        if sta < 1:
+            return 'All stats should be no less than 1'
+    
+    for sta in estadisticas.values():
+        if sta > 4 :
+            return 'All stats should be no more than 4'
 
-    valores = [fuerza, inteligencia, carisma]
-    text = ['STR','INT','CHA']
+    if sum(estadisticas.values()) != 7:
+        return "The character should start with 7 points"
+
+    # Devovlemos la cadena
+    
     dots_list = []
 
-    # Validamos lso stats
-    for i in valores:
 
-        if type(i) != int:
-            return "All stats should be integers"
-  
-        if i <= 0:
-            return "All stats should be no less than 1"
-            
-        elif i > 4:
-            return "All stats should be no more than 4"
-            
-        elif sum(valores) < 6:
-            return "The character should start with 7 points"
-            
+    for k,i in estadisticas.items():
 
-    for i in valores:
         d_full = full_dot * i
         d_empty = empty_dot * (10 - i)
         dots = d_full + d_empty
-        dots_list.append(dots)
+        cad = f'{k} {dots}'
+        dots_list.append(cad)
 
-    valores = list(zip(text, dots_list))
 
-    lista_puntos  =[f"{nombre} {punto}" for nombre,punto in valores]
+
+    cadena = name+  '\n' + '\n'.join(dots_list)
+
+
+
+        
     
-    cadena = name + "\n" + "\n".join(lista_puntos)
+
+        #cad = f"{k} {v}"
+
+    
+
+
 
     return cadena
 
 
-
-
-
-personaje = create_character("len", 3, 2, 2)
-print(personaje)
+print(create_character("len", 4, 2, 1))
